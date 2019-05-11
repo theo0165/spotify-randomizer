@@ -4,8 +4,8 @@ const exphbs = require('express-handlebars');
 const app = express();
 
 app.set('views', __dirname + '/views');
-app.engine('handlebars', exphbs({defaultLayout: 'main', extname: '.hbs'}));
-app.set('view engine', 'handlebars')
+app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.set('view engine', 'hbs')
 
 app.use(express.static(__dirname + '/public'));
 app.use(require('./controllers'));
