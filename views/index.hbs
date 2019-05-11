@@ -6,7 +6,6 @@
 {{#if logged_in}}
     <form action="/randomize" method="post">
         <h1>Select playlist</h1>
-        <input type="hidden" name="test" value="123">
         <select name="id" id="playlists">
             {{#each userPlaylists}}
                 <option value="{{this.id}}">{{this.name}}</option>

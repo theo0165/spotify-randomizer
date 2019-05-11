@@ -23,7 +23,6 @@ router.get('/', (req, res) => {
             req.session.user = data.body;
 
         }, (err) => {
-            console.log(err)
             req.session.loggedIn = false;
         })
 
@@ -90,16 +89,27 @@ router.post('/randomize', (req, res) => {
         var tracks = [];
 
         data.body.tracks.items.forEach(track => {
-            tracks.push(track.track.id)
+            tracks.push("spotify:track:" + track.track.id)
         });
-
-        console.log(tracks)
 
         tracks.shuffle();
 
-        console.log(tracks)
-
-        res.redirect('./')
+        Spotify.createPlaylist(
+            req.session.user.id,
+            "[Randomized] " + data.body.name,
+            {
+                public: false,
+                description: "Randomized by ...."
+            }
+        ).then((data) => {
+            Spotify.addTracksToPlaylist(data.body.id, tracks).then((data) => {
+                res.redirect('./success');
+            }, (err) => {
+                res.redirect('./error');
+            })
+        }, (err) => {
+            res.redirect('./error')
+        })
     }, (err) => {
         res.status(400).redirect('./')
     })
