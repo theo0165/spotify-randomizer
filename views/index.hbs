@@ -1,1 +1,13 @@
-<h1>HELLO</h1>
+{{#if logged_in}}
+    {{user}}
+    <ul>
+        <li>{{user.name}}</li>
+        {{#each userPlaylists}}
+            <li>{{this.name}}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <form action="./login" method="post" id="login_form">
+        <button type="submit" id="login_btn">Connect with Spotify</button>
+    </form>
+{{/if}}
