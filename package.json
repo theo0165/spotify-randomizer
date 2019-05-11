@@ -1,0 +1,11 @@
+{
+  "name": "spotify-randomizer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/theo0165/spotify-randomizer.git",
+  "author": "Theo Sandell <theo01sandell@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express-handlebars": "^3.0.2"
+  }
+}
