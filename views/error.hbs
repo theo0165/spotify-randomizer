@@ -1,0 +1,11 @@
+{{#if createdPlaylist}}
+<h1 id="error_title">Something went wrong...</h1>
+<p class="error_msg">Playlist was created but we could not add tracks.</p>
+<p class="error_msg">Please try again later</p>
+<div id="back_btn"><a href="./">Go back</a></div>
+{{else}}
+<h1 id="error_title">Something went wrong...</h1>
+<p class="error_msg">Could not create playlist.</p>
+<p class="error_msg">Please try again later</p>
+<div id="back_btn"><a href="./">Go back</a></div>
+{{/if}}
