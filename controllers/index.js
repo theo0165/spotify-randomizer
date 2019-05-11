@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const Spotify = require('../helpers/Spotify');
 const GenerateState = require('../helpers/GenerateState');
+const Shuffle = require('../helpers/ShuffleArray');
 
 router.get('/', (req, res) => {
     var userId;
@@ -16,11 +17,7 @@ router.get('/', (req, res) => {
         req.session.loggedIn = false;
     }
 
-    console.log("LOGGED IN : " + req.session.loggedIn)
-
     if(req.session.loggedIn === true){
-        console.log("LOGGED IN");
-
         Spotify.getMe().then((data) => {
             userId = data.body.id;
             req.session.user = data.body;
@@ -31,17 +28,15 @@ router.get('/', (req, res) => {
         })
 
         Spotify.getUserPlaylists(userId).then((data) => {
-            console.log("SENDING DATA")
             res.render('index', {
                 logged_in: req.session.loggedIn,
                 userPlaylists: data.body.items,
                 user: {
-                    'name': req.session.user.displayName,
+                    'name': req.session.user.display_name,
                     'id': req.session.user.id
                 }
             })
         }, (err) => {
-            console.log(err)
             errors.push("playlist_error");
 
             res.render('index', {
@@ -50,8 +45,6 @@ router.get('/', (req, res) => {
             });
         });
     }else {
-        console.log("NOT LOGGED IN");
-
         res.render('index', {
             logged_in: false,
             errors: errors
@@ -90,6 +83,26 @@ router.get('/callback', (req, res) => {
           }, 3000)
         }
       );
+})
+
+router.post('/randomize', (req, res) => {
+    Spotify.getPlaylist(req.body.id).then((data) => {
+        var tracks = [];
+
+        data.body.tracks.items.forEach(track => {
+            tracks.push(track.track.id)
+        });
+
+        console.log(tracks)
+
+        tracks.shuffle();
+
+        console.log(tracks)
+
+        res.redirect('./')
+    }, (err) => {
+        res.status(400).redirect('./')
+    })
 })
 
 module.exports = router;

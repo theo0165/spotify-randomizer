@@ -1,11 +1,19 @@
+<!--
+    Dropdown list
+    Button to show only playlists i created
+-->
+
 {{#if logged_in}}
-    {{user}}
-    <ul>
-        <li>{{user.name}}</li>
-        {{#each userPlaylists}}
-            <li>{{this.name}}</li>
-        {{/each}}
-    </ul>
+    <form action="/randomize" method="post">
+        <h1>Select playlist</h1>
+        <input type="hidden" name="test" value="123">
+        <select name="id" id="playlists">
+            {{#each userPlaylists}}
+                <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+        </select><br>
+        <input type="submit" value="Randomize!">
+    </form>
 {{else}}
     <form action="./login" method="post" id="login_form">
         <button type="submit" id="login_btn">Connect with Spotify</button>
