@@ -4,6 +4,7 @@
 $baseColor: #191414;
 $accentColor: #1DB954;
 $textColor: #FFFFFF;
+$darkTextColor: #CCCCCC;
 
 *{
     margin: 0;
@@ -48,5 +49,19 @@ body{
         display: inline-block;
         padding-right: 15px;
         font-weight: 900;
+    }
+}
+
+#success_msg{
+    padding-bottom: 10px;
+}
+
+#back_btn{
+    padding-top: 20px;
+
+    a{
+        color: $darkTextColor;
+        text-decoration: none;
+        text-transform: uppercase;
     }
 }

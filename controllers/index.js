@@ -26,7 +26,8 @@ router.get('/', (req, res) => {
             req.session.loggedIn = false;
         })
 
-        Spotify.getUserPlaylists(userId).then((data) => {
+        Spotify.getUserPlaylists(userId, {limit: 50}).then((data) => {
+            console.log(data.body)
             res.render('index', {
                 logged_in: req.session.loggedIn,
                 userPlaylists: data.body.items,
@@ -102,17 +103,45 @@ router.post('/randomize', (req, res) => {
                 description: "Randomized by ...."
             }
         ).then((data) => {
-            Spotify.addTracksToPlaylist(data.body.id, tracks).then((data) => {
-                res.redirect('./success');
+            Spotify.addTracksToPlaylist(data.body.id, tracks).then((addData) => {
+                res.redirect('./success?id=' + data.body.id);
             }, (err) => {
-                res.redirect('./error');
+                res.redirect('./error?id=' + data.body.id);
             })
         }, (err) => {
             res.redirect('./error')
         })
     }, (err) => {
+        console.log(err)
         res.status(400).redirect('./')
     })
+})
+
+router.get('/success', (req, res) => {
+    if(req.query.id){
+        Spotify.getPlaylist(req.query.id).then((data) => {
+            res.render('success', {
+                data: data.body
+            })
+        }, (err) => {
+            console.log(err)
+            res.status(400).redirect('./');
+        })
+    }else{
+        res.status(400).redirect('./');
+    }
+})
+
+router.get('/error', (req, res) => {
+    if(req.query.id){
+        res.render('error', {
+            createdPlaylist: true
+        })
+    }else{
+        res.render('error', {
+            createdPlaylist: false
+        })
+    }
 })
 
 module.exports = router;
